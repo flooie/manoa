@@ -9,11 +9,9 @@ def tesseract():
 
     Preserve some whitespace for parsing reasons
     """
-    filepath = Path.joinpath(root, "files", "2023-10-13-11-00-05_Arrest_Log.pdf")
+    filepath = Path.joinpath(root, "..", "docs", "logs", "2023-10-13-11-00-05-Log.pdf")
     custom_oem_psm_config = r'--oem 3 --psm 6 -l eng -c preserve_interword_spaces=1x1'
-
     pages = convert_from_path(filepath, 300)  # Adjust the DPI (resolution) as needed
-
     for i, page in enumerate(pages):
         text = pytesseract.image_to_string(page, config=custom_oem_psm_config)
         print(text)
