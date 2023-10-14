@@ -19,7 +19,7 @@ root = Path(__file__).parent
 Base = declarative_base()
 db_url = Path.joinpath(root, "..", "docs", "data", "records.db")
 
-engine = create_engine(f"sqlite:///{db_url}", echo=True)
+engine = create_engine(f"sqlite:///{db_url}", echo=False)
 
 # Define a model
 class ArrestLog(Base):

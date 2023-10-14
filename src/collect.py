@@ -27,10 +27,8 @@ def find_posted_records():
         return
     soup = bs(website.content, features="lxml")
     for link in soup.find_all('a', href=lambda href: href and 'pdf' in href and "arrest-logs" in href):
-        print(link.get("href"))
         pdf_link = link.get("href")
         if record_in_database(url=pdf_link):
-            print("RECORD IN DATABASE?")
             continue
         pdf_bytes = s.get(pdf_link, headers=headers, timeout=300, verify=False).content
         filename = pdf_link.split("/")[-1].replace("_Arrest_", "-")
