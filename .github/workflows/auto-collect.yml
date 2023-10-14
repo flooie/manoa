@@ -1,0 +1,21 @@
+name: Collect Documents
+
+on: push
+#on:
+#  schedule:
+#    - cron: '0 * * * *' # Run every hour
+
+
+jobs:
+  collector:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find Records in Oahu
+        run: |
+          print("placeholder")
