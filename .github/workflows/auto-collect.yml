@@ -1,10 +1,9 @@
 name: Collect Documents
 
-on: push
-#on:
-#  schedule:
-#    - cron: '0 * * * *' # Run every hour
-
+#on: push
+on:
+  schedule:
+    - cron: '0 */3 * * *' #every three hours
 
 jobs:
   collector:
@@ -18,4 +17,10 @@ jobs:
 
       - name: Find Records in Oahu
         run: |
-          echo "placeholder"
+          sudo apt-get install libxml2-dev libxslt-dev libyaml-dev
+          pip install -r src/requirements.txt
+          python src/collect.py
+
+      - name: Commit Changes
+        id: auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@v5
