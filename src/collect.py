@@ -2,7 +2,7 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup as bs
 import logging
-
+import shutil
 from models import initialize_db, record_in_database, save_record_to_db
 
 root = Path(__file__).parent
@@ -30,7 +30,6 @@ def find_posted_records():
     for link in soup.find_all('a', href=lambda href: href and 'pdf' in href and "arrest-logs" in href):
         print(link.get("href"))
         pdf_link = link.get("href")
-
         if record_in_database(url=pdf_link):
             print("RECORD IN DATABASE?")
             continue
@@ -39,9 +38,24 @@ def find_posted_records():
         destination = Path.joinpath(root, "files", filename)
         destination.write_bytes(pdf_bytes)
         save_record_to_db(url=pdf_link, filename=filename)
+        copy_db_to_docs()
+
+def copy_db_to_docs():
+    """Copy DB to docs
+
+    This is a placeholder until i figure out what i want to structure this
+    Alot of this is set up to avoid openly displaying the data on github
+
+    :return:
+    """
+    original = Path.joinpath(root, "records.db")
+    destination = Path.joinpath(root, "..", "docs", "data", "records.db")
+    shutil.copyfile(original, destination)
+
+
 
 def collect_records():
-    """
+    """Collect records
 
     :return:
     """
@@ -50,5 +64,5 @@ def collect_records():
 
 
 if __name__ == '__main__':
-
+    """"""
     collect_records()

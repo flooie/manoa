@@ -10,7 +10,7 @@ from sqlalchemy import (
     event,
 )
 import html
-
+from sqlalchemy import desc
 # from sqlalchemy.ext.declarative import declarative_base
 # sqlalchemy.orm.declarative_base()
 from sqlalchemy.orm import declarative_base
@@ -43,7 +43,7 @@ class ArrestLog(Base):
 def query():
     Session = sessionmaker(bind=engine)
     s = Session()
-    logs = s.query(ArrestLog).all()
+    logs = s.query(ArrestLog).order_by(desc(ArrestLog.filename)).all()
     s.close()
     msg = document.getElementById("main")
     headline = document.createElement("h1")
