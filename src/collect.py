@@ -38,21 +38,19 @@ def find_posted_records():
         destination = Path.joinpath(root, "files", filename)
         destination.write_bytes(pdf_bytes)
         save_record_to_db(url=pdf_link, filename=filename)
-        copy_db_to_docs()
 
-def copy_db_to_docs():
-    """Copy DB to docs
-
-    This is a placeholder until i figure out what i want to structure this
-    Alot of this is set up to avoid openly displaying the data on github
-
-    :return:
-    """
-    original = Path.joinpath(root, "records.db")
-    destination = Path.joinpath(root, "..", "docs", "data", "records.db")
-    shutil.copyfile(original, destination)
-
-
+# def copy_db_to_docs():
+#     """Copy DB to docs
+#
+#     This is a placeholder until i figure out what i want to structure this
+#     Alot of this is set up to avoid openly displaying the data on github
+#
+#     :return:
+#     """
+#     original = Path.joinpath(root, "records.db")
+#     destination = Path.joinpath(root, "..", "docs", "data", "records.db")
+#     shutil.copyfile(original, destination)
+#
 
 def collect_records():
     """Collect records

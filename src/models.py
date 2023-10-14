@@ -12,12 +12,14 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+from pathlib import Path
+root = Path(__file__).parent
 
 # Create a base class for declarative models
 Base = declarative_base()
-db_url = "sqlite:///src/records.db"
-engine = create_engine(db_url, echo=True)
+db_url = Path.joinpath(root, "..", "docs", "data", "records.db")
 
+engine = create_engine(f"sqlite:///{db_url}", echo=True)
 
 # Define a model
 class ArrestLog(Base):
