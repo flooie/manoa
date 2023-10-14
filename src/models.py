@@ -19,7 +19,7 @@ db_url = "sqlite:///src/records.db"
 engine = create_engine(db_url, echo=True)
 
 
-# Define a User model
+# Define a model
 class ArrestLog(Base):
     __tablename__ = "arrestlogs"
 
