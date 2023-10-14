@@ -18,4 +18,4 @@ jobs:
 
       - name: Find Records in Oahu
         run: |
-          print("placeholder")
+          echo "placeholder"
