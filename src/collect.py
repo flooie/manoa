@@ -2,7 +2,6 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup as bs
 import logging
-import shutil
 from models import initialize_db, record_in_database, save_record_to_db
 
 root = Path(__file__).parent
@@ -35,7 +34,7 @@ def find_posted_records():
             continue
         pdf_bytes = s.get(pdf_link, headers=headers, timeout=300, verify=False).content
         filename = pdf_link.split("/")[-1].replace("_Arrest_", "-")
-        destination = Path.joinpath(root, "files", filename)
+        destination = Path.joinpath(root, "..", "docs", "logs", filename)
         destination.write_bytes(pdf_bytes)
         save_record_to_db(url=pdf_link, filename=filename)
 
