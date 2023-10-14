@@ -1,4 +1,3 @@
-import argparse
 from pathlib import Path
 
 import requests
@@ -37,12 +36,10 @@ def find_posted_records():
             print("RECORD IN DATABASE?")
             continue
         pdf_bytes = s.get(pdf_link, headers=headers, timeout=300, verify=False).content
-        filename = pdf_link.split("/")[-1]
+        filename = pdf_link.split("/")[-1].replace("_Arrest_", "-")
         destination = Path.joinpath(root, "files", filename)
         destination.write_bytes(pdf_bytes)
-        print("Record", destination)
         save_record_to_db(url=pdf_link, filename=filename)
-
 
 def collect_records():
     """
