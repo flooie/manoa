@@ -4,3 +4,5 @@ tinydb==4.8.0
 prettytable==3.9.0
 beautifulsoup4==4.12.2
 lxml==4.9.3
+pytesseract==0.3.10
+Pillow==10.0.1
