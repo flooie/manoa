@@ -67,8 +67,8 @@ def fetch_coordinates(doc_id=None):
 
 
 def fetch_key():
-    if Path("src/local.txt").exists():
-        with open("src/local.txt", "r") as f:
+    if Path("src/gh.txt").exists():
+        with open("src/gh.txt", "r") as f:
             map_api = f.read()
         return map_api
     else:
