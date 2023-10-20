@@ -1,5 +1,5 @@
 from datetime import datetime
-from .models import Document, Arrest, Charge, Person
+from models import Document, Arrest, Charge, Person
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import desc, event
 from sqlalchemy import create_engine
