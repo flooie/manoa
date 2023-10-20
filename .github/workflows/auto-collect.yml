@@ -1,9 +1,9 @@
 name: Collect Documents
 
-on: push
-#on:
-#  schedule:
-#    - cron: '0 */3 * * *' #every three hours
+#on: push
+on:
+  schedule:
+    - cron: '0 */3 * * *' #every three hours
 
 jobs:
   collector:
