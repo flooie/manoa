@@ -2,7 +2,8 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup as bs
 import logging
-from models import initialize_db, record_in_database, save_record_to_db
+from models import initialize_db
+from utils import save_record_to_db, record_in_database
 
 root = Path(__file__).parent
 

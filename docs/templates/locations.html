@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./css/override.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.core.js"
+        crossorigin async
+        data-callback="initMapKit"
+        data-libraries="map,annotations"
+        ></script>
+
+    <script type="module">
+        function get_key() {
+            const jwt = "{{token}}";
+            return jwt
+        }
+
+        function get_locations() {
+            const lat_long = {{ locations|tojson }}
+            var landmarks = [];
+            for (let i = 0; i < lat_long.length; i++) {
+                var landmark = {
+                    coordinate: new mapkit.Coordinate(lat_long[i][0], lat_long[i][1]),
+                    title: "1 Aloha Tower Dr",
+                    statute: "HRS XYZ" + lat_long[i][0] + lat_long[i][1],
+                    url: lat_long[i][0] + lat_long[i][1]
+                };
+                landmarks.push(landmark);
+            }
+            return landmarks
+        }
+
+        const setupMapKitJs = async() => {
+
+            if (!window.mapkit || window.mapkit.loadedLibraries.length === 0) {
+                // mapkit.core.js or the libraries are not loaded yet.
+                // Set up the callback and wait for it to be called.
+                await new Promise(resolve => { window.initMapKit = resolve });
+
+                // Clean up
+                delete window.initMapKit;
+            }
+
+            const jwt = get_key()
+
+            mapkit.init({
+                authorizationCallback: done => { done(jwt); }
+            });
+        };
+
+        const main = async() => {
+            await setupMapKitJs();
+
+            // Landmarks data
+            const landmarks = get_locations()
+
+            // Offset between the callout and the associated annotation marker
+            const offset = new DOMPoint(-148, -78);
+
+            // Maps each annotation (key) to the landmark data describing it (value)
+            const annotationsToLandmark = new Map();
+
+            // Each annotation will use these functions to present a custom callout
+            const landmarkAnnotationCallout = {
+
+                calloutElementForAnnotation: annotation => {
+                    const landmark = annotationsToLandmark.get(annotation);
+
+                    const div = document.createElement("div");
+                    div.className = "landmark";
+
+                    const title = div.appendChild(document.createElement("h1"));
+                    title.textContent = landmark.title;
+
+                    const section = div.appendChild(document.createElement("section"));
+
+                    const statute = section.appendChild(document.createElement("p"));
+                    statute.className = "statute";
+                    statute.textContent = landmark.statute;
+
+                    const link = section.appendChild(document.createElement("p"));
+                    link.className = "homepage";
+
+                    const a = link.appendChild(document.createElement("a"));
+                    a.href = landmark.url;
+                    a.textContent = "website";
+
+                    return div;
+                },
+
+                calloutAnchorOffsetForAnnotation: (annotation, element) => offset,
+
+                calloutAppearanceAnimationForAnnotation: annotation =>
+                    ".4s cubic-bezier(0.4, 0, 0, 1.5) " +
+                    "0s 1 normal scale-and-fadein"
+            };
+
+            for (const landmark of landmarks) {
+                const annotation = new mapkit.MarkerAnnotation(landmark.coordinate, {
+                    callout: landmarkAnnotationCallout,
+                    color: "#c969e0"
+                });
+
+                annotationsToLandmark.set(annotation, landmark);
+            }
+
+            const map = new mapkit.Map("map");
+            map.showItems(Array.from(annotationsToLandmark.keys()));
+        };
+
+        main();
+    </script>
+
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand">Manoa</a>
+      </div>
+    </nav>
+
+    <div id="map"></div>
+  </body>
+</html>
