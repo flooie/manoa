@@ -295,8 +295,8 @@ def parse_address(location):
         'Authorization': f'Bearer {map_api}',
     }
     response = requests.get('https://maps-api.apple.com/v1/token', headers=headers)
-    token = response.json()['accessToken']
-
+    token = response.json().get("accessToken", None)
+    print(token)
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(
         "https://maps-api.apple.com/v1/geocode",
