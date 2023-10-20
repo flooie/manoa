@@ -16,8 +16,10 @@ root = Path(__file__).parent
 print(root)
 
 def fetch_token(url: str):
+    """"""
     filename = "local" if "localhost" in url.netloc else "gh"
-    with open(f"src/{filename}.txt", "r") as f:
+    p = Path.joinpath(root, f"{filename}.txt")
+    with open(p, "r") as f:
         return f.read()
 
 def connect_to_database(is_echoed: False):

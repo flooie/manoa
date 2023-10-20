@@ -35,7 +35,6 @@ def generate_map_page(doc_id):
 
     w = urlparse(str(window.location))
     temp_token = fetch_token(w)
-    # print(temp_token)
     output = template.render(token=temp_token, locations=lat_long)
     display(HTML(output), target="main")
 

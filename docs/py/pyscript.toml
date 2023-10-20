@@ -8,4 +8,5 @@ files = [
     "src/models.py",
     "src/utils.py",
     "src/gh.txt"
+    "src/local.txt"
 ]
