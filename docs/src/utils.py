@@ -82,26 +82,20 @@ def record_in_database(url):
     return False
 
 def parse_address(location):
-    # needed = True
-    # if needed:
     import requests
-    # MAP_API = os.getenv("MAP_API")
     map_api = fetch_key()
+    print(map_api)
     headers = {
         'Authorization': f'Bearer {map_api}',
     }
     response = requests.get('https://maps-api.apple.com/v1/token', headers=headers)
-    # token = response.json()['accessToken']
-    # print(token)
-    # # else:
-    # #     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtYXBzYXBpIiwidGlkIjoiTEVDVlJQTVFUSyIsImFwcGlkIjoiTEVDVlJQTVFUSy5tYXBzLmZsb29pZS5jb20iLCJpdGkiOmZhbHNlLCJpcnQiOmZhbHNlLCJpYXQiOjE2OTc3Mzk3MDUsImV4cCI6MTY5Nzc0MTUwNX0.IrvsBr4uxTjj8wS8KPnQ0OMw_8Bh5hqzHRweoBs_Sv2mUW1XjpJitsyN1q900XSU6WkVn51LMSO-wn6E6rPSjQ"
-    # #     # token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtYXBzYXBpIiwidGlkIjoiTEVDVlJQTVFUSyIsImFwcGlkIjoiTEVDVlJQTVFUSy5tYXBzLmZsb29pZS5jb20iLCJpdGkiOmZhbHNlLCJpcnQiOmZhbHNlLCJpYXQiOjE2OTc3MjgzNzYsImV4cCI6MTY5NzczMDE3Nn0.R8wej3CC6UhNCjw4codfmnM3bwFH5tfOR28KMeIYX-Tace8blf2GlmwG5X_FEd5BeoiK6c4UxLO205qMGhHF5w"
-    #
-    # headers = {"Authorization": f"Bearer {token}"}
-    # response = requests.get(
-    #     "https://maps-api.apple.com/v1/geocode",
-    #     params={"q": location},
-    #     headers=headers,
-    # )
-    # print(response.json())
-    # return response
+    token = response.json().get("accessToken", None)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(
+        "https://maps-api.apple.com/v1/geocode",
+        params={"q": location},
+        headers=headers,
+    )
+    return response
+
