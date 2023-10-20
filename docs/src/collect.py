@@ -3,8 +3,8 @@ import requests
 from bs4 import BeautifulSoup as bs
 import logging
 from models import initialize_db
-from utils import save_record_to_db, record_in_database
-
+from utils import record_in_database
+from extract import parse_document, ingest_data
 root = Path(__file__).parent
 
 headers = {
@@ -30,12 +30,15 @@ def find_posted_records():
     for link in soup.find_all('a', href=lambda href: href and 'pdf' in href and "arrest-logs" in href):
         pdf_link = link.get("href")
         if record_in_database(url=pdf_link):
+            print("in database")
             continue
         pdf_bytes = s.get(pdf_link, headers=headers, timeout=300, verify=False).content
         filename = pdf_link.split("/")[-1].replace("_Arrest_", "-")
-        destination = Path.joinpath(root, "..", "docs", "logs", filename)
+        destination = Path.joinpath(root, "..", "logs", filename)
         destination.write_bytes(pdf_bytes)
-        save_record_to_db(url=pdf_link, filename=filename)
+        # save_record_to_db(url=pdf_link, filename=filename)
+        data = parse_document(filename)
+        ingest_data(filename=filename, data=data)
 
 # def copy_db_to_docs():
 #     """Copy DB to docs
