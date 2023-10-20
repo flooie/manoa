@@ -83,7 +83,7 @@ def record_in_database(url):
 
 def parse_address(location):
     import requests
-    map_api = fetch_key()
+    map_api = fetch_key(url="")
     print(map_api)
     headers = {
         'Authorization': f'Bearer {map_api}',

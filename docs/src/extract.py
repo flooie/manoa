@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 import pdfplumber
 import requests
 from pdf2image import convert_from_path
@@ -9,7 +11,7 @@ from dotenv import load_dotenv
 import time
 from models import Document, Person, Charge, Officer, Arrest, initialize_db
 from models import connect_to_database
-from utils import fetch_key
+from utils import fetch_token
 load_dotenv()
 root = Path(__file__).parent
 
@@ -289,8 +291,8 @@ def query_locations():
 
 def parse_address(location):
     """"""
-    # MAP_API = os.getenv("MAP_API")
-    map_api = fetch_key()
+    w = urlparse(str("https://flooie.github.io/manoa"))
+    map_api = fetch_token(w)
     headers = {
         'Authorization': f'Bearer {map_api}',
     }
@@ -308,9 +310,9 @@ def parse_address(location):
 
 
 
-if __name__ == "__main__":
-    """"""
-    parse_address("76 Reservoir street cambridge, ma")
+# if __name__ == "__main__":
+#     """"""
+#     parse_address("76 Reservoir street cambridge, ma")
     # initialize_db()
     # import glob
     # glob_path = Path.joinpath(root, "..", "logs", "*")
