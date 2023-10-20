@@ -7,6 +7,6 @@ files = [
     "data/../templates/locations.html",
     "src/models.py",
     "src/utils.py",
-    "src/gh.txt"
+    "src/gh.txt",
     "src/local.txt"
 ]
