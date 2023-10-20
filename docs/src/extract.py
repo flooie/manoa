@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import time
 from models import Document, Person, Charge, Officer, Arrest, initialize_db
 from models import connect_to_database
+from utils import fetch_key
 load_dotenv()
 root = Path(__file__).parent
 
@@ -288,9 +289,10 @@ def query_locations():
 
 def parse_address(location):
     """"""
-    MAP_API = os.getenv("MAP_API")
+    # MAP_API = os.getenv("MAP_API")
+    map_api = fetch_key()
     headers = {
-        'Authorization': f'Bearer {MAP_API}',
+        'Authorization': f'Bearer {map_api}',
     }
     response = requests.get('https://maps-api.apple.com/v1/token', headers=headers)
     token = response.json()['accessToken']
@@ -308,14 +310,14 @@ def parse_address(location):
 
 if __name__ == "__main__":
     """"""
-    # parse_address("76 Reservoir street cambridge, ma")
-    initialize_db()
-    import glob
-    glob_path = Path.joinpath(root, "..", "logs", "*")
-    for filepath in glob.glob(str(glob_path)):
-        print(filepath)
-        fn = filepath.split("/")[-1]
-        data = parse_document(fn)
-        ingest_data(filename=fn, data=data)
+    parse_address("76 Reservoir street cambridge, ma")
+    # initialize_db()
+    # import glob
+    # glob_path = Path.joinpath(root, "..", "logs", "*")
+    # for filepath in glob.glob(str(glob_path)):
+    #     print(filepath)
+    #     fn = filepath.split("/")[-1]
+    #     data = parse_document(fn)
+    #     ingest_data(filename=fn, data=data)
 
     # parse_address("76 Reseroir street, cambridge ma ")
