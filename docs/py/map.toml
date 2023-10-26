@@ -1,0 +1,14 @@
+interpreter = "0.23.4"
+packages = ["sqlalchemy"]
+[[fetch]]
+files = [
+    "data/records.db",
+    "data/manoa.db",
+    "data/../templates/homepage.html",
+    "data/../templates/locations.html",
+    "data/../templates/map.html",
+    "src/models.py",
+    "src/utils.py",
+    "src/gh.txt",
+    "src/local.txt"
+]
