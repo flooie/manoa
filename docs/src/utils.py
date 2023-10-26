@@ -16,18 +16,13 @@ root = Path(__file__).parent
 
 def fetch_token(url: str):
     """"""
-    filename = "local" if "localhost" in url else "gh"
-    print(filename)
-    print(url)
-    try:
-        p = Path.joinpath(root, f"{filename}.txt")
-        with open(p, "r") as f:
-            return f.read()
-    except:
-        filename = "gh"
-        p = Path.joinpath(root, f"{filename}.txt")
-        with open(p, "r") as f:
-            return f.read()
+    if 'github' in url:
+        key = "gh.txt"
+    else:
+        key = "local.txt"
+    print("========>", key)
+    p = Path.joinpath(root, key)
+    return p.read_text()
 
 
 def connect_to_database(is_echoed: False):
