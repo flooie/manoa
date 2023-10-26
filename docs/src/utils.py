@@ -19,9 +19,16 @@ def fetch_token(url: str):
     filename = "local" if "localhost" in url else "gh"
     print(filename)
     print(url)
-    p = Path.joinpath(root, f"{filename}.txt")
-    with open(p, "r") as f:
-        return f.read()
+    try:
+        p = Path.joinpath(root, f"{filename}.txt")
+        with open(p, "r") as f:
+            return f.read()
+    except:
+        filename = "gh"
+        p = Path.joinpath(root, f"{filename}.txt")
+        with open(p, "r") as f:
+            return f.read()
+
 
 def connect_to_database(is_echoed: False):
     db_url = Path.joinpath(root, "..", "data", "manoa.db")
