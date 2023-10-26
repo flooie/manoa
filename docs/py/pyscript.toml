@@ -1,12 +1,20 @@
-packages = ["sqlalchemy", "jinja2", "python-dotenv"]
+interpreter = "0.23.4"
+packages = ["lxml", "jinja2", "sqlalchemy"]
 [[fetch]]
 files = [
-    "data/records.db",
     "data/manoa.db",
+
     "data/../templates/homepage.html",
     "data/../templates/locations.html",
+    "data/../templates/map.html",
+
     "src/models.py",
     "src/utils.py",
     "src/gh.txt",
-    "src/local.txt"
+    "src/local.txt",
+    "src/input.py",
+    "src/input2.py",
+    "src/pydom.py",
+
+    "js/map.js",
 ]

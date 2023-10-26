@@ -162,3 +162,5 @@ cython_debug/
 /docs/src/local.txt
 /docs/py/deprecated/junk.py
 /docs/py/deprecated/worker.py
+
+.idea/misc.xml

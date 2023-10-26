@@ -5,7 +5,6 @@ from jinja2 import Environment, FileSystemLoader
 from src.utils import fetch_documents, fetch_coordinates, fetch_token
 
 
-
 def generate_index_page():
     """Generate homepage
     
@@ -19,7 +18,7 @@ def generate_index_page():
     template = env.get_template('templates/homepage.html')
     logs = fetch_documents()
     output = template.render(data=logs)
-    display(HTML(str(output)))
+    display(HTML(output), target="main")
 
 def generate_map_page(doc_id):
     """"""
@@ -34,11 +33,12 @@ def generate_map_page(doc_id):
         lat_long.append((float(loc.latitude), float(loc.longitude)))
 
     temp_token = fetch_token(window.location.host)
-    # # output = template.render(token=temp_token, locations=lat_long)
     output = template.render(token=temp_token, locations=lat_long)
     display(HTML(output), target="main")
 
+
 def parse_url():
+    """"""
     w = urlparse(str(window.location))
     params = parse_qs(w.query)
     return params
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     if not params.get("page", None):
         generate_index_page()
     elif params.get("page", None) == ["map"]:
-        doc_id = params.get("doc_id", [])
+        doc_id = params.get("doc_id", [0])
         generate_map_page(doc_id[0])
     else:
         generate_index_page()

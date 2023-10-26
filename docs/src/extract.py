@@ -276,13 +276,12 @@ def query_locations():
     for location in unique_locations:
         if len(location[0]) < 4:
             continue
-
         loc = f"{location[0]}, Oahu, HI"
         response = parse_address(loc)
         if response.status_code != 200:
             break
         address = response.json()
-        print(address)
+        # print(address)
         if len(address["results"]) == 0:
             print(loc)
         time.sleep(2)
@@ -290,7 +289,7 @@ def query_locations():
 
 
 def parse_address(location):
-    """"""
+    """This runs on the server"""
     w = urlparse(str("https://flooie.github.io/manoa"))
     map_api = fetch_token(w)
     headers = {
@@ -298,14 +297,14 @@ def parse_address(location):
     }
     response = requests.get('https://maps-api.apple.com/v1/token', headers=headers)
     token = response.json().get("accessToken", None)
-    print(token, response.json(), response.status_code, map_api)
+    # print(token, response.json(), response.status_code, map_api)
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(
         "https://maps-api.apple.com/v1/geocode",
         params={"q": location},
         headers=headers,
     )
-    print(response.json())
+    # print(response.json())
     return response
 
 

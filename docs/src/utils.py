@@ -17,6 +17,8 @@ root = Path(__file__).parent
 def fetch_token(url: str):
     """"""
     filename = "local" if "localhost" in url else "gh"
+    print(filename)
+    print(url)
     p = Path.joinpath(root, f"{filename}.txt")
     with open(p, "r") as f:
         return f.read()
@@ -85,7 +87,6 @@ def record_in_database(url):
 def parse_address(location):
     import requests
     map_api = fetch_key(url="")
-    print(map_api)
     headers = {
         'Authorization': f'Bearer {map_api}',
     }
@@ -99,4 +100,3 @@ def parse_address(location):
         headers=headers,
     )
     return response
-
