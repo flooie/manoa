@@ -20,7 +20,6 @@ def fetch_token(url: str):
         key = "gh.txt"
     else:
         key = "local.txt"
-    print("========>", key)
     p = Path.joinpath(root, key)
     return p.read_text()
 
