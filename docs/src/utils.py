@@ -13,11 +13,10 @@ from pathlib import Path
 
 Base = declarative_base()
 root = Path(__file__).parent
-print(root)
 
 def fetch_token(url: str):
     """"""
-    filename = "local" if "localhost" in url.netloc else "gh"
+    filename = "local" if "localhost" in url else "gh"
     p = Path.joinpath(root, f"{filename}.txt")
     with open(p, "r") as f:
         return f.read()
