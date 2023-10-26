@@ -164,3 +164,13 @@ cython_debug/
 /docs/py/deprecated/worker.py
 
 .idea/misc.xml
+.DS_Store
+.idea/dataSources.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/manoa.iml
+.idea/modules.xml
+.idea/vcs.xml
+docs/.DS_Store
+docs/js/main.js
+docs/py/deprecated/junkmap.html
