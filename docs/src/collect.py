@@ -32,13 +32,14 @@ def find_posted_records():
         if record_in_database(url=pdf_link):
             print("in database")
             continue
+        print(f"Fetching {pdf_link}")
         pdf_bytes = s.get(pdf_link, headers=headers, timeout=300, verify=False).content
         filename = pdf_link.split("/")[-1].replace("_Arrest_", "-")
         destination = Path.joinpath(root, "..", "logs", filename)
         destination.write_bytes(pdf_bytes)
         # save_record_to_db(url=pdf_link, filename=filename)
         data = parse_document(filename)
-        ingest_data(filename=filename, data=data)
+        ingest_data(filename=filename, data=data, url=pdf_link)
 
 # def copy_db_to_docs():
 #     """Copy DB to docs

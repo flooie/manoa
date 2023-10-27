@@ -55,20 +55,6 @@ def fetch_coordinates(doc_id=None):
     return logs
 
 
-# def save_record_to_db(url, filename):
-#     """"""
-#     # fn = filepath.split("/")[-1]
-#     data = parse_document(filename)
-#     ingest_data(filename=filename, data=data)
-
-    # fn = filename
-    # data = parse_document(fn)
-    # ingest_data(filename=fn, data=data)
-    #
-    # s = connect_to_database(is_echoed=True)
-    # new_log = Document(**{"url": url, "filename": filename})
-    # s.add(new_log)
-
 
 def fetch_key():
     if Path("src/gh.txt").exists():
@@ -80,7 +66,8 @@ def fetch_key():
 
 def record_in_database(url):
     session = connect_to_database(is_echoed=False)
-    q = session.query(Document).filter(Document.url == url)
+    filename = url.split("/")[-1].replace("_Arrest_", "-")
+    q = session.query(Document).filter(Document.filename == filename)
     if q.count() > 0:
         return True
     return False

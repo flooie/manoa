@@ -139,12 +139,12 @@ def parse_document(filename):
     return people
 
 
-def ingest_data(filename, data):
-
+def ingest_data(filename, data, url):
+    """"""
     session = connect_to_database(is_echoed=False)
 
     # Create a document instance
-    document = Document(filename=filename)
+    document = Document(filename=filename, url=url)
     q = session.query(Document).filter(Document.filename == filename)
     if q.count() > 0:
         # results = session.query(Document).all()
@@ -162,7 +162,6 @@ def ingest_data(filename, data):
         # results = session.query(Charge).all()
         # for result in results:
         #     session.delete(result)
-        #
         # session.commit()
         # session.close()
         # print("start over ")
@@ -290,8 +289,7 @@ def query_locations():
 
 def parse_address(location):
     """This runs on the server"""
-    w = urlparse(str("https://flooie.github.io/manoa"))
-    map_api = fetch_token(w)
+    map_api = fetch_token("github")
     headers = {
         'Authorization': f'Bearer {map_api}',
     }
