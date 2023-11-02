@@ -1,0 +1,184 @@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.0/bootstrap-table.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/extensions/export/bootstrap-table-export.js"></script>
+    <script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+<!--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.0/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="https://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+    <script>
+        //exporte les données sélectionnées
+var $table = $('#arresttable');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+    })
+
+		var trBoldBlue = $("table");
+
+	$(trBoldBlue).on("click", "tr", function (){
+			$(this).toggleClass("bold-blue");
+	});
+    </script>
+
+
+<!--   <table class="table table-dark table-striped table-hover" id="arresttablex">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--         <th scope="col">#</th>-->
+<!--         <th scope="col">location</th>-->
+<!--         <th scope="col">crime</th>-->
+<!--         <th scope="col">charge</th>-->
+<!--         <th scope="col">statute</th>-->
+<!--       </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      {% for arrest in arrests %}-->
+<!--        <tr id="{{ arrest.id }}">-->
+<!--&lt;!&ndash;       <th scope="row">arrest.charges[0].arrest.date </th>&ndash;&gt;-->
+<!--           <th scope="row">{{ arrest.id }}</th>-->
+<!--           <td>{{ arrest.location }}</td>-->
+<!--           <td>{{ arrest.charges[0].crime }}</td>-->
+<!--           <td>{{ arrest.charges[0].charge }}</td>-->
+<!--           <td>{{ arrest.charges[0].statute }}</td>-->
+<!--         </tr>-->
+<!--      {% endfor %}-->
+
+<!--      </tbody>-->
+<!--   </table>-->
+
+<!--<div class="container">-->
+
+<!--<div id="toolbar">-->
+<!--		<select class="form-control">-->
+<!--				<option value="">Export Basic</option>-->
+<!--				<option value="all">Export All</option>-->
+<!--				<option value="selected">Export Selected</option>-->
+<!--		</select>-->
+<!--</div>-->
+
+<table id="arresttable"
+			 data-toggle="table"
+			 data-search="true"
+			 data-filter-control="true"
+			 data-show-export="true"
+			 data-click-to-select="true"
+			 data-toolbar="#toolbar"
+       class="table-responsive">
+	<thead>
+		<tr>
+			<th data-field="state" data-checkbox="true"></th>
+			<th data-field="prenom" data-filter-control="input" data-sortable="true">ID</th>
+			<th data-field="string" data-filter-control="input" data-sortable="true">Location</th>
+			<th data-field="date" data-filter-control="select" data-sortable="true">Crime</th>
+			<th data-field="examen" data-filter-control="input" data-sortable="true">Charge</th>
+			<th data-field="note" data-sortable="true">Statute</th>
+		</tr>
+	</thead>
+	<tbody>
+	      {% for arrest in arrests %}
+        <tr id="{{ arrest.id }}">
+<!--       <th scope="row">arrest.charges[0].arrest.date </th>-->
+           <th scope="row">{{ arrest.id }}</th>
+           <td>{{ arrest.id }}</td>
+           <td>{{ arrest.id }}</td>
+           <td>{{ arrest.location }}</td>
+           <td>{{ arrest.charges[0].crime }}</td>
+           <td>{{ arrest.charges[0].charge }}</td>
+           <td>{{ arrest.charges[0].statute }}</td>
+         </tr>
+      {% endfor %}
+
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Jitender</td>-->
+<!--			<td>01/09/2015</td>-->
+<!--			<td>Français</td>-->
+<!--			<td>12/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="1" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Jahid</td>-->
+<!--			<td>05/09/2015</td>-->
+<!--			<td>Philosophie</td>-->
+<!--			<td>8/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="2" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Valentin</td>-->
+<!--			<td>05/09/2015</td>-->
+<!--			<td>Philosophie</td>-->
+<!--			<td>4/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="3" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Milton</td>-->
+<!--			<td>05/09/2015</td>-->
+<!--			<td>Philosophie</td>-->
+<!--			<td>10/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="4" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Gonesh</td>-->
+<!--			<td>01/09/2015</td>-->
+<!--			<td>Français</td>-->
+<!--			<td>14/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="5" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Valérie</td>-->
+<!--			<td>07/09/2015</td>-->
+<!--			<td>Mathématiques</td>-->
+<!--			<td>19/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="6" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Valentin</td>-->
+<!--			<td>01/09/2015</td>-->
+<!--			<td>Français</td>-->
+<!--			<td>11/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="7" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Eric</td>-->
+<!--			<td>01/10/2015</td>-->
+<!--			<td>Philosophie</td>-->
+<!--			<td>8/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="8" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Valentin</td>-->
+<!--			<td>07/09/2015</td>-->
+<!--			<td>Mathématiques</td>-->
+<!--			<td>14/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="9" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Valérie</td>-->
+<!--			<td>01/10/2015</td>-->
+<!--			<td>Philosophie</td>-->
+<!--			<td>12/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td class="bs-checkbox "><input data-index="10" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Eric</td>-->
+<!--			<td>07/09/2015</td>-->
+<!--			<td>Mathématiques</td>-->
+<!--			<td>14/20</td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--		<td class="bs-checkbox "><input data-index="11" name="btSelectItem" type="checkbox"></td>-->
+<!--			<td>Valentin</td>-->
+<!--			<td>01/10/2015</td>-->
+<!--			<td>Philosophie</td>-->
+<!--			<td>10/20</td>-->
+<!--		</tr>-->
+	</tbody>
+</table>
+<!--</div>-->

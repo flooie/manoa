@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.core.js"
+            crossorigin async
+            data-callback="initMapKit"
+            data-libraries="map,annotations"
+            data-initial-token="eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjJTQVU2Mk5WNk4ifQ.eyJpc3MiOiJMRUNWUlBNUVRLIiwiaWF0IjoxNjk3NjM1Mzc5LCJleHAiOjE3MDY3NDU2MDB9.KEtY85kvYNGFmUPD2o-81YUWuY_t2TbNxVwN8332N2VhIcKvAhi7a0k---XUeVelIaVTuB7Jyl1358KAbUm39w"></script>
+        <script type="text/javascript"> {{ new_map_js }} </script>
+
+        <script type="module">
+        const setupMapKitJs = async() => {
+            if (!window.mapkit || window.mapkit.loadedLibraries.length === 0) {
+                await new Promise(resolve => { window.initMapKit = resolve });
+                delete window.initMapKit;
+            }
+            const jwt = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjJTQVU2Mk5WNk4ifQ.eyJpc3MiOiJMRUNWUlBNUVRLIiwiaWF0IjoxNjk3NjM1Mzc5LCJleHAiOjE3MDY3NDU2MDB9.KEtY85kvYNGFmUPD2o-81YUWuY_t2TbNxVwN8332N2VhIcKvAhi7a0k---XUeVelIaVTuB7Jyl1358KAbUm39w";
+            mapkit.init({
+                authorizationCallback: done => { done(jwt); }
+            });
+        };
+        const main = async() => {
+            await setupMapKitJs();
+            const cupertino = new mapkit.CoordinateRegion(
+                new mapkit.Coordinate(42.373611, -71.110558),
+                new mapkit.CoordinateSpan(0.107647972, 0.124985255)
+            );
+            const map = new mapkit.Map("map-container");
+            map.region = cupertino;
+        };
+        main();
+
+    </script>
+    </head>
+    <body>
+        <div id="map-container"></div>
+    </body>
+</html>

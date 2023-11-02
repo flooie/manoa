@@ -68,3 +68,5 @@
        map.showItems(Array.from(annotationsToLandmark.keys()));
    }
 
+
+    document.body.remove()

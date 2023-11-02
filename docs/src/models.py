@@ -41,6 +41,9 @@ class Officer(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
+    charges = relationship('Charge', backref='officer')
+
+
 class Arrest(Base):
     __tablename__ = 'arrest'
 
@@ -51,7 +54,24 @@ class Arrest(Base):
     location_error = Column(String)
     date = Column(String) # of Arrest
     time = Column(String) # of Arrest
+    
+    charges = relationship('Charge', backref='arrest')
 
+    def as_dict(self):
+        # charges_data = [charge.as_dict() for charge in self.charges]
+
+        data = {
+            'id': self.id,
+            'location': self.location,
+            'longitude': self.longitude,
+            'latitude': self.latitude,
+            'location_error': self.location_error,
+            'date': self.date,
+            'time': self.time,
+            'charges': len(self.charges)
+        }
+        return data
+    
 class Charge(Base):
     __tablename__ = 'charge'
 
@@ -67,6 +87,40 @@ class Charge(Base):
     officer_id = Column(Integer, ForeignKey('officer.id'))
     arrest_id = Column(Integer, ForeignKey('arrest.id'))
 
+    def as_dict(self):
+        data = {
+            'id': self.id,
+            'charge': self.charge,
+            'court': self.court,
+            'crime': self.crime,
+            'how_released': self.how_released,
+            'rel_datetime': self.rel_datetime,
+            'statute': self.statute,
+            'person': {
+                'id': self.person.id,
+                'name': self.person.name,
+                'race': self.person.race,
+                'sex': self.person.sex,
+                'age': self.person.age,  
+                "other": self.person.document_id
+                
+            },
+            'officer': {
+                'id': self.officer.id,
+                'name': self.officer.name
+            },
+            'arrest': {
+                'id': self.arrest.id,
+                'location': self.arrest.location,
+                'longitude': self.arrest.longitude,
+                'latitude': self.arrest.latitude,
+                'location_error': self.arrest.location_error,
+                'date': self.arrest.date,
+                'time': self.arrest.time
+            }
+        }
+        return data
+
 class Person(Base):
     __tablename__ = 'person'
 
@@ -78,6 +132,21 @@ class Person(Base):
     
     document_id = Column(Integer, ForeignKey('document.id'))
     charges = relationship('Charge', backref='person')
+
+
+def search_partial_matches(session, search_term):
+    results = (
+        session.query(Charge)
+        .join(Person)
+        .filter(
+            Charge.charge.ilike(f"%{search_term}%")
+            | Person.name.ilike(f"%{search_term}%")
+            | Charge.crime.ilike(f"%{search_term}%")
+            | Arrest.location.ilike(f"%{search_term}%")
+        )
+        .all()
+    )
+    return results
 
 
 def initialize_db():

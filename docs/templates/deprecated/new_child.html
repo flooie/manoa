@@ -1,0 +1,24 @@
+{% extends "landing.html" %}
+
+{% block title %}xyz{% endblock %}
+{% block head %}
+    {% include 'templates/utils/bootstrap.html' %}
+ {% include "templates/m.html" %}
+{% endblock %}
+
+{% block content %}
+        <div id="map-container"></div>
+
+    {% if title == "notlanding" %}
+        <h1>Map</h1>
+        <p class="important">
+          Welcome to my awesome homepage.
+        </p>
+
+
+
+
+    {% endif %}
+
+{% endblock %}
+

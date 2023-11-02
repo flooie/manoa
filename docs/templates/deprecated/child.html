@@ -1,0 +1,26 @@
+{% extends "landing.html" %}
+
+{% block title %}xyz{% endblock %}
+{% block head %}
+<script>console.log('\n\n\n\nok\n\n\n\n')</script>
+{% endblock %}
+
+{% block content %}
+    {% if title == "landing" %}
+        <h1>Index</h1>
+        <p class="important">
+          Welcome to my awesome homepage.
+        </p>
+        {% include 'templates/table.html' %}
+    {% else %}
+        {% include 'templates/maps.html' %}
+
+    {% endif %}
+
+{% endblock %}
+
+<div id="footer">
+    {% block footer %}
+        &copy; Copyright 2009 by <a href="http://domain.invalid/">you</a>.
+    {% endblock %}
+</div>

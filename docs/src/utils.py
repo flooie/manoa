@@ -1,9 +1,12 @@
 from datetime import datetime
 
 try:
-    from models import Document, Arrest, Charge, Person
+    from models import Document, Arrest, Charge, Person, Officer
 except ImportError:
-    from .models import Document, Arrest, Charge, Person
+    try:
+        from .models import Document, Arrest, Charge, Person, Officer
+    except ImportError:
+        from src.models import Document, Arrest, Charge, Person, Officer
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import desc, event
@@ -46,14 +49,22 @@ def fetch_documents():
 
 
 def fetch_coordinates(doc_id=None):
+    from sqlalchemy import create_engine, func
+    from sqlalchemy.orm import sessionmaker, joinedload
     s = connect_to_database(is_echoed=True)
-    if not doc_id:
-        logs = s.query(Arrest).all()
+    
+    if not doc_id or doc_id == "Select log":
+        logs = s.query(Arrest).options(joinedload(Arrest.charges)).all()
     else:
-        logs = s.query(Arrest).join(Charge).join(Person).join(Document).filter(Document.id == doc_id).all()
+        logs = s.query(Arrest).join(Charge).join(Person).join(Document).filter(Document.id == doc_id).options(joinedload(Arrest.charges)).all()
     s.close()
     return logs
 
+# def fetch_charges(charge_id=None):
+#     s = connect_to_database(is_echoed=True)
+#     charges = s.query(Charge).all()
+#     s.close()
+#     
 
 
 def fetch_key():
@@ -88,3 +99,39 @@ def parse_address(location):
         headers=headers,
     )
     return response
+
+def get_data(charge_id=1):
+    session = connect_to_database(is_echoed=False)
+    charge = session.query(Charge).filter(Charge.id==charge_id)
+
+    # Call the as_dict method
+    charge_data = charge[0].as_dict()
+    return charge_data
+
+def get_person(person_id: int):
+    session = connect_to_database(is_echoed=False)
+    person = session.query(Person).filter(Person.id==person_id)
+    return person
+
+
+def get_people():
+    s = connect_to_database(is_echoed=False)
+    unique_people = s.query(Person.name).group_by(Person.name).all()
+    return unique_people
+
+def get_officers(filter=None):
+    s = connect_to_database(is_echoed=False)
+    if filter==None:
+        officers = s.query(Officer.name).group_by(Officer.name).all()
+    else:
+        officers = s.query(Officer).filter(Officer.name==filter).all()
+    return officers
+
+def get_crimes(filter=None):
+    s = connect_to_database(is_echoed=False)
+    if filter==None:
+        crimes = s.query(Charge.crime).group_by(Charge.crime).all()
+    else:
+        crimes = s.query(Charge).filter(Charge.crime==filter).all()
+    return crimes
+

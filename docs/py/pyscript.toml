@@ -4,16 +4,14 @@ packages = ["lxml", "jinja2", "sqlalchemy"]
 files = [
     "data/manoa.db",
 
-    "data/../templates/homepage.html",
-    "data/../templates/locations.html",
-    "data/../templates/map.html",
+    "data/../templates/components/navbar.html",
+    "data/../templates/components/arrests.html",
+    "data/../templates/j.html",
+    "data/../templates/l.html",
 
     "src/models.py",
     "src/utils.py",
     "src/gh.txt",
-    "src/input.py",
-    "src/input2.py",
+    "src/local.txt",
     "src/pydom.py",
-
-    "js/map.js",
 ]

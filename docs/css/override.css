@@ -11,7 +11,7 @@ a:link, a:visited {
 .landmark {
     width: 250px;
     padding: 7px 0 0 0;
-    background: rgba(247, 247, 247, 0.75);
+    background: rgba(247, 247, 247, 0.85);
     border-radius: 5px;
     box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.29);
     font-family: Helvetica, Arial, sans-serif;
@@ -71,4 +71,31 @@ a:link, a:visited {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+.sidebar {
+    height: calc(100vh - 60px); /* 56px is the default height of the Bootstrap navbar */
+    overflow-y: auto;
+}
+
+.main-content {
+    height: calc(100vh - 60px); /* 56px is the default height of the Bootstrap navbar */
+    overflow-y: auto;
+}
+
+#map-container {
+    height: 40%;
+}
+
+py-terminal {
+    display: none;
+}
+
+#results {
+    height: 500px;
+    overflow: scroll;
+}
+
+html {
+    padding-bottom: 0px !important;
 }
