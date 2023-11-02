@@ -402,6 +402,7 @@ def index():
     """"""
     add_main_div()
     add_maps_dynamically()
+    add_css_dynamically()
     add_apple_maps()
     load_template()
     add_random_script()
