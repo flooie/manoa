@@ -84,18 +84,20 @@ a:link, a:visited {
 }
 
 #map-container {
-    height: 40%;
+    height: 90%;
 }
 
 py-terminal {
     display: none;
 }
 
-#results {
-    height: 500px;
+.bootstrap-table {
+    /*height: 50%;*/
     overflow: scroll;
 }
-
+.fixed-table-body {
+    height: 50vh;
+}
 html {
     padding-bottom: 0px !important;
 }

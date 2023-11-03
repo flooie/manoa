@@ -112,10 +112,7 @@ def reload_arrests_table(officers):
     file_loader = FileSystemLoader('.')
     env = Environment(loader=file_loader)
     template = env.get_template('templates/components/arrests.html')
-    if js.document.getElementById("arresttable"):
-        js.document.getElementById("arresttable").remove()
-    for officer in officers:
-        print(officer)
+    js.document.getElementById("results").innerHTML = ""
     output = template.render(arrests=officers)
     display(HTML(output), target='results', append=False)
 
@@ -198,8 +195,13 @@ def add_annotations_officers(officers):
             oahu = window.mapkit.CoordinateRegion.new()
             oahu.center.latitude = sum(x) / len(x) + (max(x) - min(x)) / 2
             oahu.center.longitude = sum(y) / len(y)
-            oahu.span.latitudeDelta = (max(x) - min(x)) * 2
-            oahu.span.longitudeDelta = (max(y) - min(y)) * 2
+            if (max(x) - min(x)) == 0:
+                oahu.span.latitudeDelta = 0.2
+                oahu.span.longitudeDelta = 0.2
+
+            else:
+                oahu.span.latitudeDelta = (max(x) - min(x)) * 2
+                oahu.span.longitudeDelta = (max(y) - min(y)) * 2
             # window.mapkit.maps[0].setRegionAnimated = True
             window.mapkit.maps[0].region = oahu
 
@@ -232,6 +234,14 @@ def add_random_script():
     #     return jwt
     # }
     # """
+
+    def select_changed(event):
+        js.console.log("selected changed", event)
+
+    inputs = pydom["select"]
+    for input in inputs:
+        input.when("change", select_changed)
+
 
     @when("click", "#filter")
     def filter_data(event):
@@ -335,6 +345,8 @@ def add_random_script():
                 annotation.glyphText = f"🚔️"
 
                 map = window.mapkit.maps[0]
+                # window.mapkit.CameraZoomRange.minCameraDistance = 1000
+                # window.mapkit.CameraZoomRange.maxCameraDistnace = 10000
                 map.showItems(annotation)
 
             # # Update the region using math
@@ -354,49 +366,67 @@ def add_random_script():
         output = template.render(arrests=locations)
         display(HTML(output), target='results', append=False)
 
+        def get_ids():
+            return [int(x.id) for x in js.document.querySelectorAll("tr.selected")]
 
-        
-        @when("click", "input")
-        def table_filter(event):
-            print("table changed")
-            js.alert("OK")
-
-        @when("mouseover", "tr")
-        def highlight(event):
+        @when("mouseover", "table")
+        def asdfasdfas(event):
+            blue_ids = get_ids()
+            if len(blue_ids) > 0:
+                return
             for annotation in window.mapkit.maps[0].annotations:
-                try:
-                    if int(annotation.id) == int(event.target.parentElement.id):
-                        js.console.log(annotation.id)
-                        annotation.color = "blue"
-                        # window.mapkit.maps[0].setCenterAnimated(annotation.coordinate)
+                # try:
+                if int(annotation.id) == int(event.target.parentElement.id):
+                    annotation.color = "blue"
+                    # window.mapkit.maps[0].setCenterAnimated(annotation.coordinate)
+                else:
+                    if int(annotation.id) in blue_ids:
+                        annotation.color == "blue"
                     else:
                         annotation.color = "red"
-                except:
-                    annotation.color = "red"
 
-        @when("click", "tr")
-        def select_row(event):
+        @when("click", "#toggle-map")
+        def remove_unselected(event):
+            blue_ids = get_ids()
             for annotation in window.mapkit.maps[0].annotations:
+                if int(annotation.id) in blue_ids:
+                    window.mapkit.maps[0].addAnnotation(annotation)
+                else:
+                    window.mapkit.maps[0].removeAnnotation(annotation)
+
+            
+        @when("click", "table")
+        def table_click(event):
+            blue_ids = get_ids()
+            print(blue_ids)
+            for annotation in window.mapkit.maps[0].annotations:
+
                 if int(annotation.id) == int(event.target.parentElement.id):
-                    annotation.color = "green"
+                    annotation.color = "blue"
                     window.mapkit.maps[0].setCenterAnimated(annotation.coordinate)
+
+                    # window.mapkit.maps[0].CameraZoomRange = 4
+                    # window.mapkit.maps[0].setCenterAnimated(annotation.coordinate)
+                # if int(annotation.id) in blue_ids:
+                #     annotation.color = "blue"
+                elif int(annotation.id) in blue_ids:
+                    annotation.color = "blue"
+                    window.mapkit.maps[0].addAnnotation(annotation)
+                    # window.mapkit.maps[0].setCenterAnimated(annotation.coordinate)
+                    
+                if annotation.id in blue_ids:
+                    annotation.color = "blue"
+                    # window.mapkit.maps[0].setCenterAnimated(annotation.coordinate)
+
+                    continue
                 else:
                     annotation.color = "red"
-        
 
-        # for arrest in locations:
-        #     print(arrest.__dict__)
-        #     print(arrest.charges[0].__dict__)
-            
-    @when("click", "td")
-    def highlight(event):
-        print(event)
 
-    @when("keyup", "input")
-    def table_filter(event):
-        print("table changed")
-        js.alert("OK")
-
+                # else:
+                #     print(annotation.id, blue_ids)
+                #     window.mapkit.maps[0].removeAnnotation(annotation)
+                
 
 def index():
     """"""
