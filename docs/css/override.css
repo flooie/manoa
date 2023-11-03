@@ -101,3 +101,7 @@ py-terminal {
 html {
     padding-bottom: 0px !important;
 }
+
+tr {
+    font-size: 12px;
+}

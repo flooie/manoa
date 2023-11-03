@@ -343,9 +343,6 @@ def add_random_script():
         """
         value = js.document.getElementById("officers").value
         officers = get_officers(value)
-        # for officer in officers:
-        #     print(officer)
-        #     print(officer.charges)
         add_annotations_officers(officers)
         reload_arrests_table(officers)
         
@@ -437,13 +434,13 @@ def add_random_script():
             for annotation in window.mapkit.maps[0].annotations:
                 if int(annotation.id) in blue_ids:
                     window.mapkit.maps[0].addAnnotation(annotation)
+                    annotation.color = "blue"
                 else:
                     window.mapkit.maps[0].removeAnnotation(annotation)
                     
         @when("click", "#toggle-map-off")
         def reset(event):
             value = js.document.getElementById("xlogs").value
-            
             locations = fetch_locations(value)
             append_locations(locations)
 

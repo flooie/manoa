@@ -42,18 +42,18 @@
 	<thead>
 		<tr>
 			<th data-field="state" data-checkbox="true"></th>
-			<th data-field="prenom" data-filter-control="input" data-sortable="true">ID</th>
+<!--			<th data-field="prenom" data-filter-control="input" data-sortable="true">ID</th>-->
 			<th data-field="string" data-filter-control="input" data-sortable="true">Location</th>
 			<th data-field="date" data-filter-control="input" data-sortable="true">Crime</th>
 			<th data-field="examen" data-filter-control="input" data-sortable="true">Charge</th>
-			<th data-field="note" data-sortable="true">Statute</th>
+			<th data-field="note" data-filter-control="input" data-sortable="true">Statute</th>
 		</tr>
 	</thead>
 	<tbody>
 	      {% for arrest in arrests %}
         <tr id="{{ arrest.id }}">
            <th scope="row">{{ arrest.id }}</th>
-           <td>{{ arrest.id }}</td>
+<!--           <td>{{ arrest.id }}</td>-->
            <td>{{ arrest.id }}</td>
            <td>{{ arrest.location }}</td>
            <td>{{ arrest.charges[0].crime }}</td>

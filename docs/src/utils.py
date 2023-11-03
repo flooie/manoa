@@ -7,10 +7,8 @@ except ImportError:
         from .models import Document, Arrest, Charge, Person, Officer
     except ImportError:
         from src.models import Document, Arrest, Charge, Person, Officer
-
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import desc, event
-from sqlalchemy import create_engine
+from sqlalchemy import desc, event, func, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from pathlib import Path
 
@@ -116,13 +114,26 @@ def get_person(person_id: int):
 
 def get_people():
     s = connect_to_database(is_echoed=False)
-    unique_people = s.query(Person.name).group_by(Person.name).all()
+    # unique_people = s.query(Person.name).group_by(Person.name).all()
+    unique_people = (
+        s.query(Person.name, func.count(Person.name))
+            .group_by(Person.name)
+            .order_by(func.count(Person.name).desc())
+            .all()
+    )
+
     return unique_people
 
 def get_officers(filter=None):
     s = connect_to_database(is_echoed=False)
     if filter==None:
-        officers = s.query(Officer.name).group_by(Officer.name).all()
+        # officers = s.query(Officer.name).group_by(Officer.name).all()
+        officers = (
+            s.query(Officer.name, func.count(Officer.name))
+                .group_by(Officer.name)
+                .order_by(func.count(Officer.name).desc())
+                .all()
+        )
     else:
         officers = s.query(Officer).filter(Officer.name==filter).all()
     return officers
@@ -130,7 +141,12 @@ def get_officers(filter=None):
 def get_crimes(filter=None):
     s = connect_to_database(is_echoed=False)
     if filter==None:
-        crimes = s.query(Charge.crime).group_by(Charge.crime).all()
+        # crimes = s.query(Charge.crime).group_by(Charge.crime).all()
+        crimes = (
+            s.query(Charge.crime, func.count(Charge.crime))
+                .group_by(Charge.crime)
+                .all()
+        )
     else:
         crimes = s.query(Charge).filter(Charge.crime==filter).all()
     return crimes
