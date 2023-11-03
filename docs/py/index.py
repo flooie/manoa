@@ -205,6 +205,47 @@ def add_annotations_officers(officers):
             # window.mapkit.maps[0].setRegionAnimated = True
             window.mapkit.maps[0].region = oahu
 
+def append_locations(locations):
+    if len(window.mapkit.maps) > 0:
+        window.mapkit.maps[0].removeAnnotations(
+            window.mapkit.maps[0].annotations)
+
+        x = []
+        y = []
+        for loc in locations:
+            x.append(float(loc.latitude))
+            y.append(float(loc.longitude))
+
+            # Make coordinates
+            coordinate = window.mapkit.Coordinate.new()
+            coordinate.latitude = float(loc.latitude)
+            coordinate.longitude = float(loc.longitude)
+
+            annotation = window.mapkit.MarkerAnnotation.new(coordinate)
+            annotation.callout = Callout()
+            annotation.charge_object = loc.id
+            annotation.id = loc.id
+            annotation.location = loc.location
+            annotation.obj = loc
+
+            annotation.color = "red"
+            annotation.display = "show"
+            annotation.glyphText = f"🚔️"
+
+            map = window.mapkit.maps[0]
+            # window.mapkit.CameraZoomRange.minCameraDistance = 1000
+            # window.mapkit.CameraZoomRange.maxCameraDistnace = 10000
+            map.showItems(annotation)
+
+        # # Update the region using math
+        oahu = window.mapkit.CoordinateRegion.new()
+        oahu.center.latitude = sum(x) / len(x) + (max(x) - min(x)) / 2
+        oahu.center.longitude = sum(y) / len(y)
+        oahu.span.latitudeDelta = (max(x) - min(x)) * 2
+        oahu.span.longitudeDelta = (max(y) - min(y)) * 2
+        # window.mapkit.maps[0].setRegionAnimated = True
+        window.mapkit.maps[0].region = oahu
+    
 
 def fetch_locations(document_id):
     print("\n\n\n\n", document_id, "\n\n\n\n")
@@ -314,49 +355,55 @@ def add_random_script():
         Event handlers get an event object representing the activity that raised
         them.
         """
-        try:
-            value = int(js.document.getElementById("xlogs").value)
-        except:
+        # value = int(js.document.getElementById("xlogs").value)
+        # locations = fetch_locations(value)
+        # if len(window.mapkit.maps) > 0:
+        #     window.mapkit.maps[0].removeAnnotations(window.mapkit.maps[0].annotations)
+        # 
+        #     x = []
+        #     y = []
+        #     for loc in locations:
+        #         x.append(float(loc.latitude))
+        #         y.append(float(loc.longitude))
+        # 
+        #         # Make coordinates
+        #         coordinate = window.mapkit.Coordinate.new()
+        #         coordinate.latitude = float(loc.latitude)
+        #         coordinate.longitude = float(loc.longitude)
+        # 
+        #         annotation = window.mapkit.MarkerAnnotation.new(coordinate)
+        #         annotation.callout = Callout()
+        #         annotation.charge_object = loc.id
+        #         annotation.id = loc.id
+        #         annotation.location = loc.location
+        #         annotation.obj = loc
+        # 
+        #         annotation.color = "red"
+        #         annotation.display = "show"
+        #         annotation.glyphText = f"🚔️"
+        # 
+        #         map = window.mapkit.maps[0]
+        #         # window.mapkit.CameraZoomRange.minCameraDistance = 1000
+        #         # window.mapkit.CameraZoomRange.maxCameraDistnace = 10000
+        #         map.showItems(annotation)
+        # 
+        #     # # Update the region using math
+        #     oahu = window.mapkit.CoordinateRegion.new()
+        #     oahu.center.latitude = sum(x) / len(x) + (max(x) - min(x)) / 2
+        #     oahu.center.longitude = sum(y) / len(y)
+        #     oahu.span.latitudeDelta = (max(x) - min(x)) * 2
+        #     oahu.span.longitudeDelta = (max(y) - min(y)) * 2
+        #     # window.mapkit.maps[0].setRegionAnimated = True
+        #     window.mapkit.maps[0].region = oahu
+        
+        value = js.document.getElementById("xlogs").value
+        if value == "Documents":
             value = None
+        else:
+            value = int(value)
         locations = fetch_locations(value)
-        if len(window.mapkit.maps) > 0:
-            window.mapkit.maps[0].removeAnnotations(window.mapkit.maps[0].annotations)
 
-            x = []
-            y = []
-            for loc in locations:
-                x.append(float(loc.latitude))
-                y.append(float(loc.longitude))
-
-                # Make coordinates
-                coordinate = window.mapkit.Coordinate.new()
-                coordinate.latitude = float(loc.latitude)
-                coordinate.longitude = float(loc.longitude)
-
-                annotation = window.mapkit.MarkerAnnotation.new(coordinate)
-                annotation.callout = Callout()
-                annotation.charge_object = loc.id
-                annotation.id = loc.id
-                annotation.location = loc.location
-                annotation.obj = loc
-
-                annotation.color = "red"
-                annotation.display = "show"
-                annotation.glyphText = f"🚔️"
-
-                map = window.mapkit.maps[0]
-                # window.mapkit.CameraZoomRange.minCameraDistance = 1000
-                # window.mapkit.CameraZoomRange.maxCameraDistnace = 10000
-                map.showItems(annotation)
-
-            # # Update the region using math
-            oahu = window.mapkit.CoordinateRegion.new()
-            oahu.center.latitude = sum(x) / len(x) + (max(x) - min(x)) / 2
-            oahu.center.longitude = sum(y) / len(y)
-            oahu.span.latitudeDelta = (max(x) - min(x)) * 2
-            oahu.span.longitudeDelta = (max(y) - min(y)) * 2
-            # window.mapkit.maps[0].setRegionAnimated = True
-            window.mapkit.maps[0].region = oahu
+        append_locations(locations)
 
         file_loader = FileSystemLoader('.')
         env = Environment(loader=file_loader)
@@ -384,8 +431,7 @@ def add_random_script():
                         annotation.color == "blue"
                     else:
                         annotation.color = "red"
-
-        @when("click", "#toggle-map")
+        @when("click", "#toggle-map-on")
         def remove_unselected(event):
             blue_ids = get_ids()
             for annotation in window.mapkit.maps[0].annotations:
@@ -393,8 +439,14 @@ def add_random_script():
                     window.mapkit.maps[0].addAnnotation(annotation)
                 else:
                     window.mapkit.maps[0].removeAnnotation(annotation)
-
+                    
+        @when("click", "#toggle-map-off")
+        def reset(event):
+            value = js.document.getElementById("xlogs").value
             
+            locations = fetch_locations(value)
+            append_locations(locations)
+
         @when("click", "table")
         def table_click(event):
             blue_ids = get_ids()
@@ -422,10 +474,6 @@ def add_random_script():
                 else:
                     annotation.color = "red"
 
-
-                # else:
-                #     print(annotation.id, blue_ids)
-                #     window.mapkit.maps[0].removeAnnotation(annotation)
                 
 
 def index():
