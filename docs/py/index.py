@@ -75,7 +75,7 @@ def add_css_dynamically():
     pydom['head'][0].append(stylesheet)
 
 def add_maps_dynamically():
-    token = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjJTQVU2Mk5WNk4ifQ.eyJpc3MiOiJMRUNWUlBNUVRLIiwiaWF0IjoxNjk3NjM1Mzc5LCJleHAiOjE3MDY3NDU2MDB9.KEtY85kvYNGFmUPD2o-81YUWuY_t2TbNxVwN8332N2VhIcKvAhi7a0k---XUeVelIaVTuB7Jyl1358KAbUm39w"
+    token = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkZNNTU1TjhEVDcifQ.eyJpc3MiOiJMRUNWUlBNUVRLIiwiaWF0IjoxNzA5NTczODYyLCJleHAiOjE3MTIxNjIyMTksIm9yaWdpbiI6Imh0dHBzOi8vZmxvb2llLmdpdGh1Yi5pby8ifQ.tytY33SbzkVbvbRnHQ43PNW_LuH-p0owjtnlDelMKf4MskC5q9b_2lscTUG4STd7lbYARVbtV5pfSQRadZI7Zw"
     maps = document.createElement("script")
     maps.setAttribute('crossorigin', '')
     maps.setAttribute('async', '')
